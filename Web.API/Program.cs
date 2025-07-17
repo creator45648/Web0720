@@ -1,4 +1,7 @@
 
+using Microsoft.EntityFrameworkCore;
+using Web.API.Models;
+
 namespace Web.API;
 
 public class Program
@@ -8,8 +11,10 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
         builder.AddServiceDefaults();
 
+        // 在 builder.Services 區段中添加
+        builder.Services.AddDbContext<NorthWindDbContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
         // Add services to the container.
-
         builder.Services.AddControllers();
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
         builder.Services.AddOpenApi();
