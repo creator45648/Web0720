@@ -7,3 +7,7 @@ dotnet ef dbcontext scaffold "Data Source=(localdb)\MSSQLLocalDB;Initial Catalog
 
 3.安裝SwaggerUI
 dotnet add Web.API/Web.API.csproj package Swashbuckle.AspNetCore
+
+4.新增 CustomersController 以實現 CRUD 操作
+
+5.
