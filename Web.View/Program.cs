@@ -1,3 +1,5 @@
+using Web.API.Client;
+
 namespace Web.View;
 
 public class Program
@@ -8,6 +10,11 @@ public class Program
 
         // Add services to the container.
         builder.Services.AddRazorPages();
+
+        builder.Services.AddHttpClient<IWebApiClient<string, Customer>, CustomerApiClient>(client =>
+        {
+            client.BaseAddress = new Uri("https://localhost:5001/api/");
+        });
 
         var app = builder.Build();
 
