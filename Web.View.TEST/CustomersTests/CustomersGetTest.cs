@@ -1,9 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Web.API.Client;
-using Web.View;
 
-namespace Web.View.TEST;
+namespace Web.View.TEST.CustomersTests;
 
 [TestClass]
 public class CustomersGetTest
