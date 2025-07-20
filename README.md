@@ -73,6 +73,16 @@
 - 具有 NorthWind 資料庫的 SQL Server LocalDB 或 SQL Server 實例
 
 ### 資料庫設定
+- 連線字串：Web.API\appsettings.json
+
+```json
+{
+  "ConnectionStrings": {
+    "NorthWindDb": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=NorthWind;Integrated Security=True;..."
+  }
+}
+```
+
 本應用程式使用 Entity Framework Core 的 Database-First 方法：
 
 ```bash
