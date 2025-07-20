@@ -18,37 +18,86 @@ namespace Web.View
 
         // GET: api/<CustomersController>
         [HttpGet]
-        public async Task<IEnumerable<Customer>> Get()
+        public async Task<ActionResult<IEnumerable<Customer>>> Get()
         {
-            return await webApiClient.GetAsync();
+            try
+            {
+                var customers = await webApiClient.GetAsync();
+                return Ok(customers);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
         // GET api/<CustomersController>/5
         [HttpGet("{id}")]
-        public async Task<Customer> Get(string id)
+        public async Task<ActionResult<Customer>> Get(string id)
         {
-            return await webApiClient.GetByIdAsync(id);
+            try
+            {
+                var customer = await webApiClient.GetByIdAsync(id);
+                if (customer == null)
+                {
+                    return NotFound();
+                }
+                return Ok(customer);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
         // POST api/<CustomersController>
         [HttpPost]
-        public async void Post([FromBody] Customer value)
+        public async Task<IActionResult> Post([FromBody] Customer value)
         {
-            await webApiClient.CreateAsync(value);
+            try
+            {
+                await webApiClient.CreateAsync(value);
+                return CreatedAtAction(nameof(Get), new { id = value.CustomerId }, value);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
         // PUT api/<CustomersController>/5
         [HttpPut("{id}")]
-        public async void Put(int id, [FromBody] Customer value)
+        public async Task<IActionResult> Put(string id, [FromBody] Customer value)
         {
-            await webApiClient.UpdateAsync(value.CustomerId, value);
+            try
+            {
+                if (id != value.CustomerId)
+                {
+                    return BadRequest("ID mismatch");
+                }
+                
+                await webApiClient.UpdateAsync(id, value);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
         // DELETE api/<CustomersController>/5
         [HttpDelete("{id}")]
-        public async void Delete(string id)
+        public async Task<IActionResult> Delete(string id)
         {
-            await webApiClient.DeleteAsync(id);
+            try
+            {
+                await webApiClient.DeleteAsync(id);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
     }
 }

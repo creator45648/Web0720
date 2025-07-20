@@ -11,9 +11,13 @@ public class Program
         // Add services to the container.
         builder.Services.AddRazorPages();
 
+        // Add MVC Controllers support
+        builder.Services.AddControllersWithViews();
+
+        // Update the API URL to the correct port
         builder.Services.AddHttpClient<IWebApiClient<string, Customer>, CustomerApiClient>(client =>
         {
-            client.BaseAddress = new Uri("https://localhost:5001/api/");
+            client.BaseAddress = new Uri("https://localhost:7189/");
         });
 
         var app = builder.Build();
@@ -26,15 +30,23 @@ public class Program
             app.UseHsts();
         }
 
+        app.MapControllers();
         app.UseHttpsRedirection();
-
+        app.UseStaticFiles();
         app.UseRouting();
 
         app.UseAuthorization();
 
-        app.MapStaticAssets();
+        // Map endpoints for controllers
+        app.MapControllerRoute(
+            name: "default",
+            pattern: "{controller=Home}/{action=Index}/{id?}");
+
+        // Map endpoints for Razor Pages
         app.MapRazorPages()
            .WithStaticAssets();
+
+        app.MapStaticAssets();
 
         app.Run();
     }
