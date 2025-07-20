@@ -5,13 +5,13 @@ namespace Web.View
     public class CustomerApiClient : IWebApiClient<string, Customer>
     {
         private readonly HttpClient _httpClient;
-        private readonly string _baseUrl = "https://localhost:5001/api/";
+        swaggerClient _client => new swaggerClient(_httpClient);
 
         public CustomerApiClient(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
-        swaggerClient _client => new swaggerClient(_baseUrl, _httpClient);
+        
         //Customers
         public async Task CreateAsync(Customer customer)
         {
